@@ -26,14 +26,6 @@ function App() {
     };
   });
 
-  const submitHandler = async () => {
-    const capturePart = document.querySelector(".capture");
-
-    const canvas = await html2canvas(capturePart);
-    const dataURL = canvas.toDataURL("image/png");
-    downloadjs(dataURL, "download.png", "image/png");
-  };
-
   return (
     <>
       <div
@@ -56,6 +48,7 @@ function App() {
             <div
               style={{
                 border: "0.5px solid",
+                borderColor: "#198754",
                 backgroundImage: `url("./images/background3.png")`,
                 backgroundSize: "contain",
               }}
@@ -108,9 +101,24 @@ function App() {
                 </ListGroupItem>
                 <div style={{ display: "flex" }}>
                   <Button
-                    style={{ flex: 1 }}
                     color="success"
-                    onClick={submitHandler}
+                    onClick={() => {
+                      window.alert("공유 하셨습니다!");
+                    }}
+                  >
+                    <img alt="" width={"26px"} src={"/images/share.svg"} />
+                  </Button>
+                  <Button
+                    style={{ flex: 0.7 }}
+                    color="success"
+                    onClick={async () => {
+                      const capturePart = document.querySelector(".capture");
+
+                      const canvas = await html2canvas(capturePart);
+                      const dataURL = canvas.toDataURL("image/png");
+                      downloadjs(dataURL, "download.png", "image/png");
+                      window.alert("저장완료!");
+                    }}
                   >
                     <strong>이미지로 저장</strong>
                   </Button>

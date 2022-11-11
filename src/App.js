@@ -37,8 +37,13 @@ function App() {
   return (
     <>
       <div
+        style={{ display: "flex", justifyContent: "center", marginTop: "70px" }}
+      >
+        <img alt="" width={"300px"} src="/images/daggu_logo.png" />
+      </div>
+      <div
         style={{
-          marginTop: "100px",
+          marginTop: "25px",
           marginLeft: "390px",
           marginRight: "390px",
         }}
@@ -101,9 +106,28 @@ function App() {
                     }, 0)}원`}
                   </span>
                 </ListGroupItem>
-                <Button className="p-2" color="success" onClick={submitHandler}>
-                  <strong>이미지로 저장</strong>
-                </Button>
+                <div style={{ display: "flex" }}>
+                  <Button
+                    style={{ flex: 1 }}
+                    color="success"
+                    onClick={submitHandler}
+                  >
+                    <strong>이미지로 저장</strong>
+                  </Button>
+                  <Button
+                    style={{
+                      flex: 1,
+                      backgroundColor: "#346aff",
+                      borderColor: "#346aff",
+                    }}
+                    color="success"
+                    onClick={() => {
+                      window.alert("구매 하셨습니다!");
+                    }}
+                  >
+                    <strong>구매 하기</strong>
+                  </Button>
+                </div>
               </ListGroup>
             </div>
           </Col>

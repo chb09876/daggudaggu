@@ -12,10 +12,9 @@ import {
   ListGroupItem,
   Badge,
 } from "reactstrap";
+import StickerComponent from "./StickerComponent";
 
 function App() {
-  const [images, setImages] = useState([]);
-
   const [image] = useImage();
   const [imageX, setImageX] = useState(50);
   const [imageY, setImageY] = useState(50);
@@ -26,21 +25,9 @@ function App() {
 
   const image1 = "./images/test1.png";
   const image2 = "./images/test2.png";
-  const image3 = "./images/test1.png";
+  const image3 = "./images/test3.png";
 
-  function generateStickers() {
-    return [
-      ...images.map((image, i) => ({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-      })),
-    ];
-  }
-
-  const handleImageDragEnd = (e) => {
-    setImageX(e.target.x());
-    setImageY(e.target.y());
-  };
+  const [images, setImages] = useState([]);
 
   const addTest1ImgHandler = () => {
     setCntImgA(cntImgA + 1);
@@ -61,26 +48,7 @@ function App() {
     console.log(images);
   };
 
-  // const createImageHandler = (image) => {
-  //   return (
-  //     <>
-  //       <Image
-  //         image={image}
-  //         draggable
-  //         x={60}
-  //         y={60}
-  //         width={100}
-  //         height={150}
-  //         onDragEnd={handleImageDragEnd}
-  //       />
-  //     </>
-  //   );
-  // };
-
-  useEffect(() => {
-    if (images.length !== 0) {
-    }
-  }, [images]);
+  useEffect(() => {}, [images]);
 
   return (
     <>
@@ -96,16 +64,8 @@ function App() {
             <div style={{ border: "1px solid" }}>
               <Stage width={650} height={500}>
                 <Layer>
-                  {images.map((image, i) => (
-                    <Image
-                      image={image}
-                      draggable
-                      x={60}
-                      y={60}
-                      width={100}
-                      height={150}
-                      onDragEnd={handleImageDragEnd}
-                    />
+                  {images.map((image) => (
+                    <StickerComponent image={image} />
                   ))}
                 </Layer>
               </Stage>

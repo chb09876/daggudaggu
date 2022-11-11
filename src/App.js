@@ -6,7 +6,6 @@ import { Stage, Layer } from "react-konva";
 import downloadjs from "downloadjs";
 import html2canvas from "html2canvas";
 import useStickers from "./useStickers";
-
 import {
   ButtonGroup,
   Button,

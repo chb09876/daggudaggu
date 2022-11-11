@@ -20,8 +20,8 @@ const StickerComponent = (props) => {
       draggable
       x={imageX}
       y={imageY}
-      width={45}
-      height={45}
+      width={130}
+      height={130}
       onDragEnd={handleImageDragEnd}
       onClick={(e) => {
         props.onDeleteSticker(e, props.name);

@@ -45,11 +45,15 @@ function App() {
         }}
       >
         <Row>
+          <div style={{ backGroundColor: "red", height: "30px" }} />
+        </Row>
+        <Row>
           <Col md={8}>
             <div
               style={{
                 border: "0.5px solid",
-                backgroundImage: `url("./images/background.png")`,
+                backgroundImage: `url("./images/background3.png")`,
+                backgroundSize: "contain",
               }}
               className="capture"
             >
@@ -83,16 +87,16 @@ function App() {
                     className="justify-content-between text-center"
                   >
                     <img alt={""} src={sticker.src} height={"30px"} />
-                    <span style={{ fontSize: 10 }} className="mx-3">
+                    <span style={{ fontSize: 20 }} className="mx-3">
                       {`${sticker.price}원`}
                     </span>
-                    <Badge pill style={{ fontSize: 10 }} className="mx-3">
+                    <Badge pill style={{ fontSize: 18 }} className="mx-3">
                       {sticker.cnt}
                     </Badge>
                   </ListGroupItem>
                 ))}
                 <ListGroupItem className="justify-content-between text-center">
-                  <span style={{ fontSize: 15, fontWeight: "bold" }}>
+                  <span style={{ fontSize: 25, fontWeight: "bold" }}>
                     {`${stickers.reduce((sum, sticker) => {
                       return sum + sticker.price * sticker.cnt;
                     }, 0)}원`}
@@ -129,7 +133,7 @@ function App() {
                   ]);
                 }}
               >
-                <img src={sticker.src} height={"45px"} alt="" />
+                <img src={sticker.src} height={"80px"} alt="" />
               </Button>
             ))}
           </ButtonGroup>

@@ -28,6 +28,15 @@ function App() {
   const image2 = "./images/test2.png";
   const image3 = "./images/test1.png";
 
+  function generateStickers() {
+    return [
+      ...images.map((image, i) => ({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+      })),
+    ];
+  }
+
   const handleImageDragEnd = (e) => {
     setImageX(e.target.x());
     setImageY(e.target.y());
@@ -52,11 +61,26 @@ function App() {
     console.log(images);
   };
 
+  // const createImageHandler = (image) => {
+  //   return (
+  //     <>
+  //       <Image
+  //         image={image}
+  //         draggable
+  //         x={60}
+  //         y={60}
+  //         width={100}
+  //         height={150}
+  //         onDragEnd={handleImageDragEnd}
+  //       />
+  //     </>
+  //   );
+  // };
+
   useEffect(() => {
-    window.oncontextmenu = () => {
-      return false;
-    };
-  });
+    if (images.length !== 0) {
+    }
+  }, [images]);
 
   return (
     <>
@@ -72,15 +96,17 @@ function App() {
             <div style={{ border: "1px solid" }}>
               <Stage width={650} height={500}>
                 <Layer>
-                  <Image
-                    image={image}
-                    draggable
-                    x={imageX}
-                    y={imageY}
-                    width={100}
-                    height={150}
-                    onDragEnd={handleImageDragEnd}
-                  />
+                  {images.map((image, i) => (
+                    <Image
+                      image={image}
+                      draggable
+                      x={60}
+                      y={60}
+                      width={100}
+                      height={150}
+                      onDragEnd={handleImageDragEnd}
+                    />
+                  ))}
                 </Layer>
               </Stage>
             </div>

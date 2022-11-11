@@ -56,7 +56,7 @@ function App() {
               }}
               className="capture"
             >
-              <Stage width={670} height={520}>
+              <Stage width={750} height={520}>
                 <Layer>
                   {images.map(({ src, id, name }) => (
                     <StickerComponent

@@ -4,7 +4,6 @@ import useImage from "use-image";
 
 const StickerComponent = (props) => {
   const [id] = useImage(props.image);
-  console.log(props.image);
 
   const [imageX, setImageX] = useState(50);
   const [imageY, setImageY] = useState(50);
@@ -17,12 +16,16 @@ const StickerComponent = (props) => {
   return (
     <Image
       image={id}
+      id={props.imageId}
       draggable
       x={imageX}
       y={imageY}
-      width={100}
-      height={150}
+      width={45}
+      height={45}
       onDragEnd={handleImageDragEnd}
+      onClick={(e) => {
+        props.onDeleteSticker(e, props.name);
+      }}
     />
   );
 };

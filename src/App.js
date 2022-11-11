@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { Row, Col } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Stage, Layer, Image } from "react-konva";
-import useImage from "use-image";
+import { Stage, Layer } from "react-konva";
+import downloadjs from "downloadjs";
+import html2canvas from "html2canvas";
+import useStickers from "./useStickers";
 
 import {
   ButtonGroup,
@@ -15,57 +17,55 @@ import {
 import StickerComponent from "./StickerComponent";
 
 function App() {
-  const [image] = useImage();
-  const [imageX, setImageX] = useState(50);
-  const [imageY, setImageY] = useState(50);
-
-  const [cntImgA, setCntImgA] = useState(0);
-  const [cntImgB, setCntImgB] = useState(0);
-  const [cntImgC, setCntImgC] = useState(0);
-
-  const image1 = "./images/test1.png";
-  const image2 = "./images/test2.png";
-  const image3 = "./images/test3.png";
+  const [stickers, addCntSticker, subCntSticker] = useStickers();
 
   const [images, setImages] = useState([]);
 
-  const addTest1ImgHandler = () => {
-    setCntImgA(cntImgA + 1);
-    setImages([...images, image1]);
-  };
+  useEffect(() => {
+    window.oncontextmenu = () => {
+      return false;
+    };
+  });
 
-  const addTest2ImgHandler = () => {
-    setCntImgB(cntImgB + 1);
-    setImages([...images, image2]);
+  const submitHandler = async () => {
+    const canvas = await html2canvas(document.body);
+    const dataURL = canvas.toDataURL("image/png");
+    downloadjs(dataURL, "download.png", "image/png");
   };
-
-  const addTest3ImgHandler = () => {
-    setCntImgC(cntImgC + 1);
-    setImages([...images, image3]);
-  };
-
-  const submitHandler = () => {
-    console.log(images);
-  };
-
-  useEffect(() => {}, [images]);
 
   return (
     <>
       <div
         style={{
           marginTop: "100px",
-          marginLeft: "400px",
-          marginRight: "400px",
+          marginLeft: "390px",
+          marginRight: "390px",
         }}
       >
         <Row>
           <Col md={8}>
-            <div style={{ border: "1px solid" }}>
-              <Stage width={650} height={500}>
+            <div
+              style={{
+                border: "0.5px solid",
+                backgroundImage: `url("./images/background.png")`,
+              }}
+            >
+              <Stage width={670} height={520}>
                 <Layer>
-                  {images.map((image) => (
-                    <StickerComponent image={image} />
+                  {images.map(({ src, id, name }) => (
+                    <StickerComponent
+                      key={id}
+                      imageId={id}
+                      name={name}
+                      image={src}
+                      onDeleteSticker={(e, name) => {
+                        console.log(e.target.id());
+                        subCntSticker(name);
+                        setImages((prev) =>
+                          prev.filter((image) => image.id !== e.target.id())
+                        );
+                      }}
+                    />
                   ))}
                 </Layer>
               </Stage>
@@ -74,40 +74,29 @@ function App() {
           <Col md={4}>
             <div>
               <ListGroup>
+                {stickers.map((sticker, index) => (
+                  <ListGroupItem
+                    key={index}
+                    className="justify-content-between text-center"
+                  >
+                    <img alt={""} src={sticker.src} height={"30px"} />
+                    <span style={{ fontSize: 10 }} className="mx-3">
+                      {`${sticker.price}원`}
+                    </span>
+                    <Badge pill style={{ fontSize: 10 }} className="mx-3">
+                      {sticker.cnt}
+                    </Badge>
+                  </ListGroupItem>
+                ))}
                 <ListGroupItem className="justify-content-between text-center">
-                  <img alt={""} src={"./images/test1.png"} height={"80px"} />
-                  <span style={{ fontSize: 20 }} className="mx-3">
-                    2000원
-                  </span>
-                  <Badge pill style={{ fontSize: 20 }} className="mx-3">
-                    {cntImgA}
-                  </Badge>
-                </ListGroupItem>
-                <ListGroupItem className="justify-content-between text-center">
-                  <img alt={""} src={"./images/test2.png"} height={"80px"} />
-                  <span style={{ fontSize: 20 }} className="mx-3">
-                    1700원
-                  </span>
-                  <Badge pill style={{ fontSize: 20 }} className="mx-3">
-                    {cntImgB}
-                  </Badge>
-                </ListGroupItem>
-                <ListGroupItem className="justify-content-between text-center">
-                  <img alt={""} src={"./images/test3.png"} height={"80px"} />
-                  <span style={{ fontSize: 20 }} className="mx-3">
-                    2200원
-                  </span>
-                  <Badge pill style={{ fontSize: 20 }} className="mx-3">
-                    {cntImgC}
-                  </Badge>
-                </ListGroupItem>
-                <ListGroupItem className="justify-content-between text-center">
-                  <span style={{ fontSize: 30, fontWeight: "bold" }}>
-                    총 {cntImgA * 2000 + cntImgB * 1700 + cntImgC * 2200}원
+                  <span style={{ fontSize: 15, fontWeight: "bold" }}>
+                    {`${stickers.reduce((sum, sticker) => {
+                      return sum + sticker.price * sticker.cnt;
+                    }, 0)}원`}
                   </span>
                 </ListGroupItem>
-                <Button className="p-3" color="primary" onClick={submitHandler}>
-                  Click Me
+                <Button className="p-2" color="success" onClick={submitHandler}>
+                  <strong>이미지로 저장</strong>
                 </Button>
               </ListGroup>
             </div>
@@ -121,15 +110,25 @@ function App() {
           }}
         >
           <ButtonGroup>
-            <Button onClick={addTest1ImgHandler}>
-              <img src={"./images/test1.png"} height={"50px"} alt="" />
-            </Button>
-            <Button onClick={addTest2ImgHandler}>
-              <img src={"./images/test2.png"} height={"50px"} alt="" />
-            </Button>
-            <Button onClick={addTest3ImgHandler}>
-              <img src={"./images/test3.png"} height={"50px"} alt="" />
-            </Button>
+            {stickers.map((sticker, index) => (
+              <Button
+                style={{ backgroundColor: "#198754", border: "none" }}
+                key={index}
+                onClick={() => {
+                  addCntSticker(sticker.name);
+                  setImages((prev) => [
+                    ...prev,
+                    {
+                      name: sticker.name,
+                      id: `${sticker.name}${prev.length}`,
+                      src: sticker.src,
+                    },
+                  ]);
+                }}
+              >
+                <img src={sticker.src} height={"45px"} alt="" />
+              </Button>
+            ))}
           </ButtonGroup>
         </Row>
       </div>

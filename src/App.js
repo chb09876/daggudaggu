@@ -28,7 +28,9 @@ function App() {
   });
 
   const submitHandler = async () => {
-    const canvas = await html2canvas(document.body);
+    const capturePart = document.querySelector(".capture");
+
+    const canvas = await html2canvas(capturePart);
     const dataURL = canvas.toDataURL("image/png");
     downloadjs(dataURL, "download.png", "image/png");
   };
@@ -49,6 +51,7 @@ function App() {
                 border: "0.5px solid",
                 backgroundImage: `url("./images/background.png")`,
               }}
+              className="capture"
             >
               <Stage width={670} height={520}>
                 <Layer>

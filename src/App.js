@@ -64,10 +64,12 @@ function App() {
                       image={src}
                       onDeleteSticker={(e, name) => {
                         console.log(e.target.id());
-                        subCntSticker(name);
-                        setImages((prev) =>
-                          prev.filter((image) => image.id !== e.target.id())
-                        );
+                        if (e.evt.which === 3 || e.evt.button === 2) {
+                          subCntSticker(name);
+                          setImages((prev) =>
+                            prev.filter((image) => image.id !== e.target.id())
+                          );
+                        }
                       }}
                     />
                   ))}
